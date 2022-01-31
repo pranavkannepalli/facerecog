@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). This project was created to learn how to use a Flask backend with a React frontend, especially servers and React hooks.
 
 ## Available Scripts
 
