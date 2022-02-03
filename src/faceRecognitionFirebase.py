@@ -1,9 +1,9 @@
-from crypt import methods
 import face_recognition
 import cv2
 from face_recognition.api import face_encodings
 import pyrebase
 from flask import Flask, jsonify, request
+import os.path
 
 app = Flask(__name__)
 
@@ -15,9 +15,11 @@ def dataTest():
 @app.route('/personData', methods=['POST', 'GET'])
 def personData():
     f = request.files['file']
-    f.save("./Subject.jpg")
-    person_json = {"Img":"Subject.jpg", "Path":"./Subject.jpg"}
-    return findPerson(person_json)
+    f.save(f.filename)
+    person_json = {"Img":f.filename, "Path":"./" + f.filename}
+    person_json = jsonify(findPerson(person_json))
+    print(person_json)
+    return person_json
 
 @app.route('/missingPeople', methods=['POST', 'GET'])
 def missingPeople():
@@ -39,9 +41,9 @@ def missingPeople():
 
     requestData = request.get_json()
     print(requestData)
-    path = requestData.replace(" ", "") + ".jpg"
-    storage.child(path).put("./Subject.jpg")
-    db.child("People").child(requestData).update({"Name":requestData, "Img":path})
+    path = requestData["Who"].replace(" ", "") + ".jpg"
+    storage.child(path).put("./"+requestData["Img"])
+    db.child("People").child(requestData["Who"]).update({"Name":requestData["Who"], "Img":path})
 
     return jsonify("All Good")
     
@@ -76,7 +78,9 @@ def findPerson(personData_json):
 
     for person in people.each():
         person_img = person.val()['Img']
-        storage.child(person_img).download("", person_img)
+        if not os.path.exists(person_img):
+            print("Downloading", person_img)
+            storage.child(person_img).download(person_img)
 
     found = False
 
@@ -97,9 +101,9 @@ def findPerson(personData_json):
             found = True
             break
     if found:
-        return jsonify({"Name":person_name, "Found":True})
+        return {"Name":person_name, "Found":True}
     else:
-        return jsonify({"Found":False})
+        return {"Img":img_name, "Found":False}
 
 
     '''if not found_person: #if we do not find the persson, record their name in the database and upload their image
@@ -109,5 +113,5 @@ def findPerson(personData_json):
         data = {"Name":person_name, "Img":person_img, "Found": True}
         return False, "Please enter data"'''
 
-if __name__ == "__main__":
+if __name__ == "__main__":  
     app.run(debug=True)

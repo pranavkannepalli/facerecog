@@ -1,0 +1,49 @@
+[debug] [2022-02-03T02:00:33.087Z] ----------------------------------------------------------------------
+[debug] [2022-02-03T02:00:33.114Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2022-02-03T02:00:33.115Z] CLI Version:   10.1.4
+[debug] [2022-02-03T02:00:33.116Z] Platform:      linux
+[debug] [2022-02-03T02:00:33.116Z] Node Version:  v16.13.2
+[debug] [2022-02-03T02:00:33.150Z] Time:          Wed Feb 02 2022 18:00:33 GMT-0800 (Pacific Standard Time)
+[debug] [2022-02-03T02:00:33.151Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-02-03T02:00:33.174Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2022-02-03T02:00:34.139Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-02-03T02:00:34.140Z] > authorizing via signed-in user (pranav.kannepalli@gmail.com)
+[debug] [2022-02-03T02:00:34.141Z] [iam] checking project face-recognition-c1e84 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-02-03T02:00:34.153Z] > refreshing access token with scopes: []
+[debug] [2022-02-03T02:00:34.155Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-03T02:00:34.454Z] <<< HTTP RESPONSE 200 {"date":"Thu, 03 Feb 2022 02:00:36 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-03T02:00:34.550Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/face-recognition-c1e84:testIamPermissions [none]
+[debug] [2022-02-03T02:00:34.551Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/face-recognition-c1e84:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-02-03T02:00:34.851Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2022-02-03T02:00:34.852Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2022-02-03T02:00:35.127Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/face-recognition-c1e84:testIamPermissions 200
+[debug] [2022-02-03T02:00:35.127Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/face-recognition-c1e84:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-02-03T02:00:35.131Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/face-recognition-c1e84 [none]
+[debug] [2022-02-03T02:00:35.357Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/face-recognition-c1e84 200
+[debug] [2022-02-03T02:00:35.366Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/face-recognition-c1e84 {"projectId":"face-recognition-c1e84","projectNumber":"225780171266","displayName":"face-recognition","name":"projects/face-recognition-c1e84","resources":{"hostingSite":"face-recognition-c1e84","realtimeDatabaseInstance":"face-recognition-c1e84-default-rtdb","storageBucket":"face-recognition-c1e84.appspot.com","locationId":"us-west2"},"state":"ACTIVE"}
+[info] 
+[info] === Deploying to 'face-recognition-c1e84'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2022-02-03T02:00:35.401Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2022-02-03T02:00:35.402Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-03T02:00:35.502Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","date":"Thu, 03 Feb 2022 02:00:37 GMT","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-03T02:00:35.543Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/face-recognition-c1e84/versions  
+ {"config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2022-02-03T06:09:01.028Z] ----------------------------------------------------------------------
+[debug] [2022-02-03T06:09:01.032Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2022-02-03T06:09:01.032Z] CLI Version:   10.1.4
+[debug] [2022-02-03T06:09:01.033Z] Platform:      linux
+[debug] [2022-02-03T06:09:01.033Z] Node Version:  v16.13.2
+[debug] [2022-02-03T06:09:01.039Z] Time:          Wed Feb 02 2022 22:09:01 GMT-0800 (Pacific Standard Time)
+[debug] [2022-02-03T06:09:01.040Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-02-03T06:09:01.173Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-02-03T06:09:01.175Z] > authorizing via signed-in user (pranav.kannepalli@gmail.com)
+[debug] [2022-02-03T06:09:01.175Z] [iam] checking project face-recognition-c1e84 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-02-03T06:09:01.177Z] > refreshing access token with scopes: []
+[debug] [2022-02-03T06:09:01.178Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
