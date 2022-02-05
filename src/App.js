@@ -64,8 +64,13 @@ function App() {
         {(data.length > 0) ? 
           (data.map((data) =>
           (data.Found)?
-          (<p>{data.Name}</p>)
-          :(<div class="card h-25 m-3">
+          (
+            <div class="card w-25 m-3">
+              <img class="card-img-top" src={require(data.Img)}/>
+              <p class="card-title">{data.Name}</p>)
+            </div>
+          ):(
+          <div class="card h-25 m-3">
             <div class="card-title">
               <label htmlFor="Know" className="form-label">Do you know the person in the image: {data.Img}</label>
               <input type='checkbox' id='Know' onChange={(event)=>{console.log("Toggled"); setToggled(!event.target.checked)}}/>
