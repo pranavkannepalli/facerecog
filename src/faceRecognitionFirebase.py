@@ -101,7 +101,7 @@ def findPerson(personData_json):
             found = True
             break
     if found:
-        return {"Name":person_name, "Found":True}
+        return {"Name":person_name, "Found":True, "Img": img_name}
     else:
         return {"Img":img_name, "Found":False}
 

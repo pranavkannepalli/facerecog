@@ -61,46 +61,53 @@ function App() {
             </form>
           </div>
         </div>
-        {(data.length > 0) ? 
-          (data.map((data) =>
-          (data.Found)?
-          (
-            <div class="card w-25 m-3">
-              <img class="card-img-top" src={require(data.Img)}/>
-              <p class="card-title">{data.Name}</p>)
-            </div>
-          ):(
-          <div class="card h-25 m-3">
-            <div class="card-title">
-              <label htmlFor="Know" className="form-label">Do you know the person in the image: {data.Img}</label>
-              <input type='checkbox' id='Know' onChange={(event)=>{console.log("Toggled"); setToggled(!event.target.checked)}}/>
-            </div>
-            {(!toggled) ?   
-            ( 
-              <div class="card-body">
-                <form onSubmit={event => handleNewEntry(event, data.Img)}>
-                  <label htmlFor="Who" className="form-label">Who are they?</label>
-                  <input type='text' id='Who'/>
-                  <input type='submit'/>
-                </form>
-              </div>
+        <ol className="list-group list-group-numbered list-group-flush">
+          <h2 className="m-3">Previous Requests:</h2>
+          {(data.length > 0) ?
+            (data.map((data) =>
+            (data.Found)?
+            (
+              <li className='list-group-item'>
+                <div className="card m-3 w-25">
+                  <img className="card-img-top" src={require("./"+data.Img)}/>
+                  <p className="card-title">{data.Name}</p>
+                </div>
+              </li>
             ):(
-              <div class="card-body">
-                <p>
-                  Okay, that's fine.
-                </p>
+              <li className='list-group-item'>
+            <div className="card w-25 m-3">
+              <img className="card-img-top" src={require("./"+data.Img)}/>
+              <div className="card-title">
+                <label htmlFor="Know" className="form-label">Do you know the person in the image: {data.Img}</label>
+                <input type='checkbox' id='Know' onChange={(event)=>{console.log("Toggled"); setToggled(!event.target.checked)}}/>
               </div>
+              {(!toggled) ?   
+              ( 
+                <div className="card-body">
+                  <form onSubmit={event => handleNewEntry(event, data.Img)}>
+                    <label htmlFor="Who" className="form-label">Who are they?</label>
+                    <input type='text' id='Who'/>
+                    <input type='submit'/>
+                  </form>
+                </div>
+              ):(
+                <div className="card-body">
+                  <p>
+                    Okay, that's fine.
+                  </p>
+                </div>
+              )}
+              {(databaseUpdated === 'All Good') ? (
+                <div>
+                  We've updated the database
+                  <a href="localhost:3000">Restart</a>  
+                </div>
+              ):(<div>Complete the form</div>)}
+            </div></li>))
+            ):(
+              <p>No completed requests yet</p>
             )}
-            {(databaseUpdated === 'All Good') ? (
-              <div>
-                We've updated the database
-                <a href="localhost:3000">Restart</a>  
-              </div>
-            ):(<div>Complete the form</div>)}
-          </div>))
-          ):(
-            <p>We haven't processed your request yet.</p>
-          )}
+          </ol>
     </div>
   )
 }
