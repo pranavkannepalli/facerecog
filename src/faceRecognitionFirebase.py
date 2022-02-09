@@ -71,7 +71,10 @@ def findPerson(personData_json):
     img = cv2.imread(path)
     img = cv2.resize(img, (400, int(400*img.shape[0]/img.shape[1])))
     rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    encodedimg = face_recognition.face_encodings(rgb_img)[0]
+    try:
+        encodedimg = face_recognition.face_encodings(rgb_img)[0]
+    except:
+        return {'Name':'No clear face', 'Found':True, 'Img':img_name}
 
 
     people = db.child("People").get()
