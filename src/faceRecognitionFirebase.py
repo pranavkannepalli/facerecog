@@ -4,9 +4,10 @@ from face_recognition.api import face_encodings
 import pyrebase
 from flask import Flask, jsonify, request
 import os.path
+import pytesseract
 
 app = Flask(__name__)
-
+tessdata_dir_config = r'--tessdata-dir "./tessdata"'
 
 @app.route("/fetchData")
 def dataTest():
@@ -18,7 +19,7 @@ def personData():
     f.save(f.filename)
     person_json = {"Img":f.filename, "Path":"./" + f.filename}
     person_json = jsonify(findPerson(person_json))
-    print(person_json)
+
     return person_json
 
 @app.route('/missingPeople', methods=['POST', 'GET'])
@@ -108,13 +109,31 @@ def findPerson(personData_json):
     else:
         return {"Img":img_name, "Found":False}
 
+@app.route('/textRecog', methods=['POST', 'GET'])
+def findText():
+    f = request.files['file']
+    f.save("./" + f.filename)
+    path = "./" + f.filename
+    name = f.filename
+    
+    img = cv2.imread(path)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+    img = cv2.medianBlur(img, 5)
 
-    '''if not found_person: #if we do not find the persson, record their name in the database and upload their image
-        new_data = {'Name':subject, "Img":img_name}
-        db.child("People").child(subject).update(new_data)
-        storage.child(img_name).put(path)
-        data = {"Name":person_name, "Img":person_img, "Found": True}
-        return False, "Please enter data"'''
+    text = pytesseract.image_to_string(img, config=tessdata_dir_config)
+    print(text)
 
+    cv2.imshow(name, img)
+    cv2.waitKey(10000)
+    cv2.destroyAllWindows()
+
+    if len(text) > 0:
+        response = jsonify({'Img':name, 'Text':text, 'Found':True})
+    else:
+        response = jsonify({'Img':name, 'Found':False})
+
+    return response
+    
 if __name__ == "__main__":  
     app.run(debug=True)
