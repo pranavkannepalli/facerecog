@@ -2,6 +2,21 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). This project was created to learn how to use a Flask backend with a React frontend, especially servers and React hooks.
 
+## Some necessary packages
+
+tesseract - https://tesseract-ocr.github.io/tessdoc/Home.html
+
+npm:
+- React & React-dom
+- react-router & react-router-dom
+- boostrap
+
+Python
+- opencv-python
+- face_recognition
+- pytesseract
+- flask
+
 ## Available Scripts
 
 In the project directory, you can run:
