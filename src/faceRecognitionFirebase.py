@@ -124,15 +124,13 @@ def findText():
     text = pytesseract.image_to_string(img, config=tessdata_dir_config)
     print(text)
 
-    cv2.imshow(name, img)
-    cv2.waitKey(10000)
-    cv2.destroyAllWindows()
+    cv2.imwrite(path, img)
 
     if len(text) > 0:
         response = jsonify({'Img':name, 'Text':text, 'Found':True})
     else:
         response = jsonify({'Img':name, 'Found':False})
-
+ 
     return response
     
 if __name__ == "__main__":  
