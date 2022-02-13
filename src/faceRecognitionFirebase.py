@@ -116,21 +116,24 @@ def findText():
     path = "./" + f.filename
     name = f.filename
     
-    img = cv2.imread(path)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-    img = cv2.medianBlur(img, 5)
+    if ".jpg" in f.filename or ".png" in f.filename:
+        img = cv2.imread(path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+        img = cv2.medianBlur(img, 5)
 
-    text = pytesseract.image_to_string(img, config=tessdata_dir_config)
-    print(text)
+        text = pytesseract.image_to_string(img, config=tessdata_dir_config)
+        print(text)
 
-    cv2.imwrite(path, img)
+        if ".png" in f.filename or ".jpg" in f.filename:
+            cv2.imwrite(path, img)
 
-    if len(text) > 0:
-        response = jsonify({'Img':name, 'Text':text, 'Found':True})
+        if len(text) > 0:
+            response = jsonify({'Img':name, 'Text':text, 'Found':True})
+        else:
+            response = jsonify({'Img':name, 'Found':False})
     else:
-        response = jsonify({'Img':name, 'Found':False})
- 
+        response = jsonify({'Img':name, 'Text':"Wrong File Type", "Found":True})
     return response
     
 if __name__ == "__main__":  

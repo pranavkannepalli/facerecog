@@ -16,6 +16,7 @@ Python
 - face_recognition
 - pytesseract
 - flask
+- bootstrap
 
 ## Available Scripts
 
