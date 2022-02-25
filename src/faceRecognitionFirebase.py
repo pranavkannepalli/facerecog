@@ -1,12 +1,13 @@
-from crypt import methods
 import face_recognition
 import cv2
 from face_recognition.api import face_encodings
 import pyrebase
 from flask import Flask, jsonify, request
+import os.path
+import pytesseract
 
 app = Flask(__name__)
-
+tessdata_dir_config = r'--tessdata-dir "./tessdata"'
 
 @app.route("/fetchData")
 def dataTest():
@@ -15,9 +16,11 @@ def dataTest():
 @app.route('/personData', methods=['POST', 'GET'])
 def personData():
     f = request.files['file']
-    f.save("./Subject.jpg")
-    person_json = {"Img":"Subject.jpg", "Path":"./Subject.jpg"}
-    return findPerson(person_json)
+    f.save(f.filename)
+    person_json = {"Img":f.filename, "Path":"./" + f.filename}
+    person_json = jsonify(findPerson(person_json))
+
+    return person_json
 
 @app.route('/missingPeople', methods=['POST', 'GET'])
 def missingPeople():
@@ -39,9 +42,9 @@ def missingPeople():
 
     requestData = request.get_json()
     print(requestData)
-    path = requestData.replace(" ", "") + ".jpg"
-    storage.child(path).put("./Subject.jpg")
-    db.child("People").child(requestData).update({"Name":requestData, "Img":path})
+    path = requestData["Who"].replace(" ", "") + ".jpg"
+    storage.child(path).put("./"+requestData["Img"])
+    db.child("People").child(requestData["Who"]).update({"Name":requestData["Who"], "Img":path})
 
     return jsonify("All Good")
     
@@ -69,14 +72,19 @@ def findPerson(personData_json):
     img = cv2.imread(path)
     img = cv2.resize(img, (400, int(400*img.shape[0]/img.shape[1])))
     rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    encodedimg = face_recognition.face_encodings(rgb_img)[0]
+    try:
+        encodedimg = face_recognition.face_encodings(rgb_img)[0]
+    except:
+        return {'Name':'No clear face', 'Found':True, 'Img':img_name}
 
 
     people = db.child("People").get()
 
     for person in people.each():
         person_img = person.val()['Img']
-        storage.child(person_img).download("", person_img)
+        if not os.path.exists(person_img):
+            print("Downloading", person_img)
+            storage.child(person_img).download(person_img)
 
     found = False
 
@@ -97,17 +105,36 @@ def findPerson(personData_json):
             found = True
             break
     if found:
-        return jsonify({"Name":person_name, "Found":True})
+        return {"Name":person_name, "Found":True, "Img": img_name}
     else:
-        return jsonify({"Found":False})
+        return {"Img":img_name, "Found":False}
 
+@app.route('/textRecog', methods=['POST', 'GET'])
+def findText():
+    f = request.files['file']
+    f.save("./" + f.filename)
+    path = "./" + f.filename
+    name = f.filename
+    
+    if ".jpg" in f.filename or ".png" in f.filename:
+        img = cv2.imread(path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+        img = cv2.medianBlur(img, 5)
 
-    '''if not found_person: #if we do not find the persson, record their name in the database and upload their image
-        new_data = {'Name':subject, "Img":img_name}
-        db.child("People").child(subject).update(new_data)
-        storage.child(img_name).put(path)
-        data = {"Name":person_name, "Img":person_img, "Found": True}
-        return False, "Please enter data"'''
+        text = pytesseract.image_to_string(img, config=tessdata_dir_config)
+        print(text)
 
-if __name__ == "__main__":
+        if ".png" in f.filename or ".jpg" in f.filename:
+            cv2.imwrite(path, img)
+
+        if len(text) > 0:
+            response = jsonify({'Img':name, 'Text':text, 'Found':True})
+        else:
+            response = jsonify({'Img':name, 'Found':False})
+    else:
+        response = jsonify({'Img':name, 'Text':"Wrong File Type", "Found":True})
+    return response
+    
+if __name__ == "__main__":  
     app.run(debug=True)
